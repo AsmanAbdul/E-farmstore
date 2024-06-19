@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: 100px auto;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 30px;
+        }
+        .option {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: #333;
+            cursor: pointer; /* Add cursor pointer for better UX */
+        }
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        .section {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <a href="admin.html" class="option" onclick="login('admin')">Admin</a>
+        <a href="buyer.html" class="option" onclick="login('buyer')">Buyer</a>
+        <a href="farmer.html" class="option" onclick="login('farmer')">Farmer</a>
+
+        <div class="section">
+            <h2>Sign Up</h2>
+            <a href="" class="option">Buyer Sign Up</a>
+            <a href="" class="option">Farmer Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        function login(userType) {
+            // Redirect user based on selected userType
+            switch (userType) {
+                case 'admin':
+                    window.location.href = '/admin'; // Redirect to admin page
+                    break;
+                case 'buyer':
+                    window.location.href = '/'; // Redirect to customer page
+                    break;
+                case 'farmer':
+                    window.location.href = '/farmer'; // Redirect to delivery boy page
+                    break;
+                default:
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

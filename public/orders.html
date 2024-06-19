@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - View Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Farmer's page - View Orders</h2>
+        <table id="ordersTable">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Order Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Orders will be dynamically inserted here -->
+            </tbody>
+        </table>
+        <div class="link">
+            <a href="upload.html">Go back to upload products</a>
+            <a href="orders.html">view recent orders</a>
+        </div>
+    </div>
+
+    <script>
+        async function fetchOrders() {
+            const response = await fetch('/orders');
+            const orders = await response.json();
+
+            const ordersTableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
+
+            orders.forEach(order => {
+                const row = ordersTableBody.insertRow();
+                row.insertCell(0).textContent = order.order_id;
+                row.insertCell(1).textContent = order.name;
+                row.insertCell(2).textContent = order.phone;
+                row.insertCell(3).textContent = order.address;
+                row.insertCell(4).textContent = order.product_name;
+                row.insertCell(5).textContent = order.price;
+                row.insertCell(6).textContent = order.quantity;
+                row.insertCell(7).textContent = order.total_price;
+                row.insertCell(8).textContent = new Date(order.order_date).toLocaleDateString();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchOrders);
+    </script>
+</body>
+
+</html>

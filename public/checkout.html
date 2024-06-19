@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .checkout-box {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 350px;
+        }
+        .checkout-box h1 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 3px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .payment-options {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .total-amount {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .fill-details-message {
+            text-align: center;
+            color: #FF0000; /* Red color */
+            margin-bottom: 10px;
+        }
+        .back-to-products {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-to-products a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .back-to-products a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="checkout-box">
+        <h1>Checkout</h1>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+        
+        <div id="cartItems"></div>
+        
+        <div class="total-amount" id="totalAmount">Total: KES 0</div>
+        
+        <button id="completeOrder">Complete Order</button>
+        <div class="payment-options">
+            <p>Make payments through M-Pesa and confirm your order:</p>
+            <a href="https://example.com/mpesa/payment?phone=YOUR_PHONE_NUMBER&amount=AMOUNT" class="mpesa-button">Pay with M-Pesa</a>
+        </div>
+        <div class="fill-details-message">Please fill in the details to complete the order.</div>
+        <div class="back-to-products"><a href="product_list.html">Back to Product List</a></div>
+    </div>
+
+    <script>
+        document.getElementById('completeOrder').addEventListener('click', function() {
+    let name = document.getElementById('name').value;
+    let phone = document.getElementById('phone').value;
+    let address = document.getElementById('address').value;
+
+    if (name === '' || phone === '' || address === '') {
+        alert('Please fill in all the details to complete the order.');
+        return;
+    }
+
+    // Retrieve product details from cart (you can adjust this based on your implementation)
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.forEach(item => {
+        let data = {
+            name: name,
+            phone: phone,
+            address: address,
+            product_name: item.name,
+            price: item.price,
+            quantity: item.quantity
+        };
+
+        // Send data to server
+        fetch('/submit-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(responseText => {
+            alert(responseText); // Display success message
+        })
+        .catch(error => {
+            console.error('Error submitting order:', error);
+            alert('An error occurred while placing the order');
+        });
+    });
+});
+
+
+
+
+//
+document.addEventListener('DOMContentLoaded', function () {
+            displayCartItems();
+            calculateTotalAmount();
+        });
+
+        function displayCartItems() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItemsContainer = document.getElementById('cartItems');
+            cartItemsContainer.innerHTML = '';
+
+            cart.forEach(item => {
+                let cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                let totalPrice = item.price * item.quantity; // Calculate total price for each item
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <p>${item.name}</p>
+                    <p class="price">KES ${totalPrice}</p>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+        }
+
+        function calculateTotalAmount() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalAmount = cart.reduce((total, item) => total + (item.price * item.quantity), 0); // Calculate total amount based on item prices and quantities
+            document.getElementById('totalAmount').innerText = `Total: KES ${totalAmount}`;
+        }
+
+        document.getElementById('completeOrder').addEventListener('click', function() {
+            let name = document.getElementById('name').value;
+            let phone = document.getElementById('phone').value;
+            let address = document.getElementById('address').value;
+
+            if (name === '' || email === '' || phone === '' || address === '') {
+                alert('Please fill in all the details to complete the order.');
+                return;
+            }
+
+            // Code to handle completing the order (e.g., sending data to server)
+            alert('Order completed! Thank you for your purchase.');
+        });
+
+
+
+</script>
+</body>
+</html>

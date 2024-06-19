@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Manage Users</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+    <div style="max-width: 600px; margin: auto; background: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="text-align: center; color: #333;">Admin Panel</h2>
+
+        <h3 style="color: #555; margin-top: 20px;">Add Buyer</h3>
+        <form id="addBuyerForm" style="margin-bottom: 20px;">
+            <label for="buyerName" style="display: block; margin-bottom: 5px; color: #555;">Name</label>
+            <input type="text" id="buyerName" name="buyerName" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <label for="buyerEmail" style="display: block; margin-bottom: 5px; color: #555;">Email</label>
+            <input type="email" id="buyerEmail" name="buyerEmail" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <label for="buyerPassword" style="display: block; margin-bottom: 5px; color: #555;">Password</label>
+            <input type="password" id="buyerPassword" name="buyerPassword" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <label for="buyerPhone" style="display: block; margin-bottom: 5px; color: #555;">Phone</label>
+            <input type="tel" id="buyerPhone" name="buyerPhone" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button type="submit" style="width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Add Buyer</button>
+        </form>
+
+        <h3 style="color: #555; margin-top: 20px;">Delete Buyer</h3>
+        <form id="deleteBuyerForm" style="margin-bottom: 20px;">
+            <label for="deleteBuyerEmail" style="display: block; margin-bottom: 5px; color: #555;">Email</label>
+            <input type="email" id="deleteBuyerEmail" name="deleteBuyerEmail" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button type="submit" class="delete-button" style="width: 100%; padding: 10px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete Buyer</button>
+        </form>
+
+        <h3 style="color: #555; margin-top: 20px;">Add Farmer</h3>
+        <form id="addFarmerForm" style="margin-bottom: 20px;">
+            <label for="farmerName" style="display: block; margin-bottom: 5px; color: #555;">Name</label>
+            <input type="text" id="farmerName" name="farmerName" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <label for="farmerEmail" style="display: block; margin-bottom: 5px; color: #555;">Email</label>
+            <input type="email" id="farmerEmail" name="farmerEmail" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <label for="farmerPassword" style="display: block; margin-bottom: 5px; color: #555;">Password</label>
+            <input type="password" id="farmerPassword" name="farmerPassword" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <label for="farmerPhone" style="display: block; margin-bottom: 5px; color: #555;">Phone</label>
+            <input type="tel" id="farmerPhone" name="farmerPhone" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button type="submit" style="width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Add Farmer</button>
+        </form>
+
+        <h3 style="color: #555; margin-top: 20px;">Delete Farmer</h3>
+        <form id="deleteFarmerForm" style="margin-bottom: 20px;">
+            <label for="deleteFarmerEmail" style="display: block; margin-bottom: 5px; color: #555;">Email</label>
+            <input type="email" id="deleteFarmerEmail" name="deleteFarmerEmail" required
+                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button type="submit" class="delete-button" style="width: 100%; padding: 10px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete Farmer</button>
+        </form>
+        <div class="link" style="text-align: center; margin-top: 20px;">
+            <a href="" style="color: #007bff; text-decoration: none;"></a>
+        </div>
+
+        <div id="submissionMessage" style="display: none; color: green; text-align: center; margin-top: 10px;">Form submitted successfully!</div>
+        <div id="deleteMessage" style="margin-top: 10px; text-align: center;"></div>
+    </div>
+
+    <script>
+        async function postData(url = '', data = {}) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const responseData = await response.text();
+                console.log(responseData);
+
+                // Show submission message
+                document.getElementById('submissionMessage').style.display = 'block';
+
+                // Hide submission message after 3 seconds
+                setTimeout(function () {
+                    document.getElementById('submissionMessage').style.display = 'none';
+                }, 3000);
+
+                return responseData;
+            } catch (error) {
+                console.error('Error:', error);
+                return 'error';
+            }
+        }
+
+        document.getElementById('addBuyerForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const buyerName = document.getElementById('buyerName').value;
+            const buyerEmail = document.getElementById('buyerEmail').value;
+            const buyerPassword = document.getElementById('buyerPassword').value;
+            const buyerPhone = document.getElementById('buyerPhone').value;
+            const response = await postData('/add-buyer', { name: buyerName, email: buyerEmail, password: buyerPassword, phone: buyerPhone });
+            handleResponse(response);
+        });
+
+        document.getElementById('addFarmerForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const farmerName
+            = document.getElementById('farmerName').value;
+            const farmerEmail = document.getElementById('farmerEmail').value;
+            const farmerPassword = document.getElementById('farmerPassword').value;
+            const farmerPhone = document.getElementById('farmerPhone').value;
+            const response = await postData('/add-farmer', { name: farmerName, email: farmerEmail, password: farmerPassword, phone: farmerPhone });
+            handleResponse(response);
+        });
+
+        document.getElementById('deleteBuyerForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const email = document.getElementById('deleteBuyerEmail').value;
+            const response = await postData('/delete-buyer', { email: email });
+            handleDeleteResponse(response);
+        });
+
+        document.getElementById('deleteFarmerForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const email = document.getElementById('deleteFarmerEmail').value;
+            const response = await postData('/delete-farmer', { email: email });
+            handleDeleteResponse(response);
+        });
+
+        function handleResponse(response) {
+            const message = document.createElement('div');
+            message.style.marginTop = '10px';
+            message.style.textAlign = 'center';
+            message.style.color = 'green';
+            message.textContent = 'Form submitted successfully!';
+            document.getElementById('submissionMessage').appendChild(message);
+
+            // Hide submission message after 3 seconds
+            setTimeout(function () {
+                message.remove();
+            }, 3000);
+        }
+
+        function handleDeleteResponse(response) {
+            const message = document.createElement('div');
+            message.style.marginTop = '10px';
+            message.style.textAlign = 'center';
+            if (response === 'success') {
+                message.style.color = 'green';
+                message.textContent = 'Information deleted successfully!';
+            } else {
+                message.style.color = 'red';
+                message.textContent = 'Failed to delete information. Please try again.';
+            }
+            const deleteMessageContainer = document.getElementById('deleteMessage');
+            deleteMessageContainer.innerHTML = '';
+            deleteMessageContainer.appendChild(message);
+        }
+    </script>
+</body>
+
+</html>
