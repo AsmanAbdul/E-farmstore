@@ -22,7 +22,7 @@ app.use(session({
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'ISAIAH',
+  database: 'FARMSTORE',
   password: 'Ibokolo22',
   port: 5432, // Default PostgreSQL port
 });
